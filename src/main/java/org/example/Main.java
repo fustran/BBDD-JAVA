@@ -93,7 +93,7 @@ public class Main {
 
     public static void modificar(Connection conexion){
 
-        String query = "UPDATE estudiante SET nombre = 'Iván' WHERE nia = '10000001'";
+        String query = "UPDATE estudiante SET nombre = N'Iván' WHERE nia = '10000001'";
 
         Statement statement;
 
@@ -134,7 +134,6 @@ public class Main {
         Statement statement;
         ResultSet resultado; // Guardar lo que devuelve
         ArrayList<Estudiante> estudiantes = new ArrayList<>();
-
 
         try {
             statement = conexion.createStatement();
