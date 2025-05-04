@@ -13,13 +13,15 @@ public class Main {
     public static void main(String[] args) {
 
         Connection bd = conectar();
-        //insertar(bd);
-        //modificar(bd);
-        //borrar(bd);
-        //consultar(bd);
+        insertar(bd);
+        modificar(bd);
+        consultar(bd);
+        borrar(bd);
+        consultar(bd);
 
         List<Estudiante> lista = consultarALista(bd);
-        out.println("La Lista tiene " + lista.size() + " alumnos.");
+        out.println("La Lista contiene " + lista.size() + " alumnos.");
+        out.println();
 
         desconectar(bd);
 
@@ -79,7 +81,7 @@ public class Main {
 
     public static void insertar(Connection conexion){
 
-        String query = "INSERT INTO estudiante (nia, nombre, fechaNacimiento) VALUES ('76859123', 'Roberto', '2000-10-05')";
+        String query = "INSERT INTO estudiante (nia, nombre, fechaNacimiento) VALUES ('76859123', 'Roberto Fresh', '2000-10-05')";
         Statement statement;
 
         try {
