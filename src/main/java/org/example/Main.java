@@ -1,8 +1,11 @@
 package org.example;
 
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import static java.lang.System.*;
 
 public class Main {
@@ -10,11 +13,14 @@ public class Main {
     public static void main(String[] args) {
 
         Connection bd = conectar();
-        // insertar(bd);
-        // modificar(bd);
-        // borrar(bd);
-        // consultar(bd);
-        consultarALista(bd);
+        //insertar(bd);
+        //modificar(bd);
+        //borrar(bd);
+        //consultar(bd);
+
+        List<Estudiante> lista = consultarALista(bd);
+        out.println("La Lista tiene " + lista.size() + " alumnos.");
+
         desconectar(bd);
 
     }
@@ -50,7 +56,6 @@ public class Main {
     public static void consultar(Connection conexion){
 
         String query = "SELECT * FROM estudiante";
-
         Statement statement;
         ResultSet resultado; // Guardar lo que devuelve
 
@@ -75,7 +80,6 @@ public class Main {
     public static void insertar(Connection conexion){
 
         String query = "INSERT INTO estudiante (nia, nombre, fechaNacimiento) VALUES ('76859123', 'Roberto', '2000-10-05')";
-
         Statement statement;
 
         try {
@@ -93,8 +97,7 @@ public class Main {
 
     public static void modificar(Connection conexion){
 
-        String query = "UPDATE estudiante SET nombre = N'Iván' WHERE nia = '10000001'";
-
+        String query = "UPDATE estudiante SET FechaNacimiento = '2001-11-10' WHERE nia = '76859123'";
         Statement statement;
 
         try {
@@ -112,8 +115,7 @@ public class Main {
 
     public static void borrar(Connection conexion){
 
-        String query = "DELETE FROM estudiante WHERE nombre = 'Iván'";
-
+        String query = "DELETE FROM estudiante WHERE nombre = 'Roberto Fresh'";
         Statement statement;
 
         try {
@@ -128,12 +130,13 @@ public class Main {
         }
     }
 
-    public static void consultarALista(Connection conexion){
-        String query = "SELECT * FROM estudiante";
+    public static List<Estudiante> consultarALista(Connection conexion){
 
+        ArrayList<Estudiante> listaEstudiantes = new ArrayList<>();
+
+        String query = "SELECT * FROM estudiante";
         Statement statement;
         ResultSet resultado; // Guardar lo que devuelve
-        ArrayList<Estudiante> estudiantes = new ArrayList<>();
 
         try {
             statement = conexion.createStatement();
@@ -144,12 +147,31 @@ public class Main {
                 String nombre = resultado.getString("Nombre");
                 LocalDate fechaNacimiento = resultado.getDate("fechaNacimiento").toLocalDate();
 
-                estudiantes.add(new Estudiante(nia, nombre, fechaNacimiento));
-                out.println(estudiantes);
+                listaEstudiantes.add(new Estudiante(nia, nombre, fechaNacimiento));
+            }
+
+            out.println();
+            out.println("      LISTA DE ESTUDIANTES: ");
+            out.println();
+            int cont = 0;
+
+            for (Estudiante estudiantes : listaEstudiantes){
+
+                if (cont < listaEstudiantes.size()){
+                    cont++;
+                }
+
+                out.println("ESTUDIANTE " + "[" + cont + "]:");
+                out.println(" Nombre: " + estudiantes.getNombre());
+                out.println(" Nia: " + estudiantes.getNia());
+                out.println(" Fecha de nacimiento: " + estudiantes.getFechaNacimiento());
+                out.println();
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        return Collections.unmodifiableList(listaEstudiantes);
     }
 }
